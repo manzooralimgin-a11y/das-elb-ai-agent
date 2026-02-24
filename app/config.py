@@ -5,7 +5,7 @@ from typing import Optional
 class Settings(BaseSettings):
     # Google Gemini API — get key at https://aistudio.google.com/app/apikey
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-1.5-flash"   # High rate limit: 1500 RPM (vs 2 RPM for 2.5-pro)
+    GEMINI_MODEL: str = "gemini-2.5-flash"   # High rate limit: 1500 RPM (vs 2 RPM for 2.5-pro)
     GEMINI_MAX_TOKENS: int = 4096
     GEMINI_TEMPERATURE: float = 0.3
 
