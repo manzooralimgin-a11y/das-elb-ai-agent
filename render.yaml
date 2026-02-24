@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: das-elb-ai-agent
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: GEMINI_MAX_TOKENS
+        value: "4096"
+      - key: GEMINI_TEMPERATURE
+        value: "0.3"
+      - key: HOTEL_EMAIL
+        value: info@das-elb.de
+      - key: IONOS_IMAP_HOST
+        value: exchange.ionos.eu
+      - key: IONOS_IMAP_PORT
+        value: "993"
+      - key: IONOS_SMTP_HOST
+        value: smtp.exchange.ionos.eu
+      - key: IONOS_SMTP_PORT
+        value: "587"
+      - key: IONOS_EMAIL_PASSWORD
+        sync: false
+      - key: HOTEL_MGMT_API_BASE
+        value: https://daselb-management-os-v2-api-912934217177.europe-west3.run.app
+      - key: RESERVATIONS_API_BASE
+        value: https://das-elb-backend.onrender.com
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./daselb_agent.db
+      - key: POLL_INTERVAL_SECONDS
+        value: "180"
+      - key: DASHBOARD_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://das-elb-next.web.app,https://das-elb-next.firebaseapp.com,http://localhost:3001
+      - key: ENABLE_AUTO_SEND
+        value: "false"
+      - key: ENABLE_WHATSAPP_NOTIFICATIONS
+        value: "false"
+      - key: ENABLE_COMPETITOR_RATES
+        value: "false"
