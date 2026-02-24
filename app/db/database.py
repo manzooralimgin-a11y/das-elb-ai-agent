@@ -28,8 +28,8 @@ async def init_db():
         # Force migration for missing thread_id column in existing SQLite databases
         try:
             await conn.execute(text("ALTER TABLE email_records ADD COLUMN thread_id VARCHAR(255)"))
-        except OperationalError:
-            pass  # Column already exists
+        except (OperationalError, Exception):
+            pass  # Column already exists (ProgrammingError in asyncpg/Postgres)
 
 
 async def get_db():
