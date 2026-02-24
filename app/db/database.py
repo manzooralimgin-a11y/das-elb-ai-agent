@@ -21,8 +21,15 @@ class Base(DeclarativeBase):
 
 async def init_db():
     from app.db import models  # noqa: F401 — ensure models are registered
+    from sqlalchemy import text
+    from sqlalchemy.exc import OperationalError
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Force migration for missing thread_id column in existing SQLite databases
+        try:
+            await conn.execute(text("ALTER TABLE email_records ADD COLUMN thread_id VARCHAR(255)"))
+        except OperationalError:
+            pass  # Column already exists
 
 
 async def get_db():
