@@ -22,7 +22,8 @@ async def sync_style_profile(_=Depends(verify_api_key)):
     """
     logger.info("Starting style profile sync...")
     try:
-        sent_emails = fetch_sent_emails_imap(max_results=50)
+        # Reduce max_results to 12 to avoid Cloudflare 100s timeout
+        sent_emails = fetch_sent_emails_imap(max_results=12)
         logger.info(f"Fetched {len(sent_emails)} sent emails for style analysis")
 
         profile_json = analyze_sent_emails(sent_emails)
