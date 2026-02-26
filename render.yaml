@@ -7,10 +7,6 @@ services:
     plan: free
     region: frankfurt
     healthCheckPath: /health
-    disk:
-      name: db
-      mountPath: /app/data
-      sizeGB: 1
     envVars:
       - key: GEMINI_API_KEY
         sync: false
@@ -37,7 +33,7 @@ services:
       - key: RESERVATIONS_API_BASE
         value: https://das-elb-backend.onrender.com
       - key: DATABASE_URL
-        value: sqlite+aiosqlite:////app/data/daselb_agent.db
+        sync: false
       - key: POLL_INTERVAL_SECONDS
         value: "180"
       - key: DASHBOARD_API_KEY
