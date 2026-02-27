@@ -149,12 +149,12 @@ async def get_analytics_summary() -> dict:
     async with AsyncSessionLocal() as session:
         from sqlalchemy import func
 
-        total = await session.scalar(select(func.count(EmailRecord.id)))
+        total = await session.scalar(select(func.count(EmailRecord.id))) or 0
         pending = await session.scalar(
             select(func.count(EmailRecord.id)).where(
                 EmailRecord.status == "draft_created"
             )
-        )
+        ) or 0
         sent_today_count = await session.scalar(
             select(func.count(EmailRecord.id)).where(
                 EmailRecord.status == "sent",
@@ -162,17 +162,23 @@ async def get_analytics_summary() -> dict:
                     hour=0, minute=0, second=0, microsecond=0
                 ),
             )
-        )
-        avg_confidence = await session.scalar(
-            select(func.avg(EmailRecord.confidence))
-        )
-        total_revenue = await session.scalar(
-            select(func.sum(EmailRecord.revenue_attributed))
-        )
+        ) or 0
+        try:
+            avg_confidence = await session.scalar(
+                select(func.avg(EmailRecord.confidence))
+            )
+        except Exception:
+            avg_confidence = None
+        try:
+            total_revenue = await session.scalar(
+                select(func.sum(EmailRecord.revenue_attributed))
+            )
+        except Exception:
+            total_revenue = None
         return {
-            "total_emails": total or 0,
-            "pending_review": pending or 0,
-            "sent_today": sent_today_count or 0,
+            "total_emails": total,
+            "pending_review": pending,
+            "sent_today": sent_today_count,
             "avg_confidence": round(avg_confidence or 0, 3),
             "total_revenue_attributed": round(total_revenue or 0, 2),
         }
