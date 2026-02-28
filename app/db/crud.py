@@ -9,7 +9,8 @@ from app.db.models import EmailRecord, AuditLog, VIPGuest, StyleProfile
 BERLIN = ZoneInfo("Europe/Berlin")
 
 def now_berlin() -> datetime:
-    return datetime.now(tz=BERLIN)
+    """Return current time as naive UTC datetime (DB columns are timestamp WITHOUT time zone)."""
+    return datetime.now(tz=BERLIN).replace(tzinfo=None)
 
 
 async def is_email_already_processed(message_id: str) -> bool:

@@ -20,7 +20,8 @@ from typing import Optional
 BERLIN = ZoneInfo("Europe/Berlin")
 
 def now_berlin() -> datetime:
-    return datetime.now(tz=BERLIN)
+    """Return current time as naive datetime (DB columns are timestamp WITHOUT time zone)."""
+    return datetime.now(tz=BERLIN).replace(tzinfo=None)
 
 from app.agents.intent_classifier import classify_intent
 from app.agents.entity_extractor import extract_entities
