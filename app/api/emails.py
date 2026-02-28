@@ -257,7 +257,7 @@ async def retry_email(
 
     # Mark as processing so frontend knows pipeline is running
     await update_email_record_fields(email_id, {
-        "status": "failed",  # temporary — pipeline will update to draft_created or no_reply_needed
+        "status": "processing",  # temporary — pipeline will update to draft_created or no_reply_needed
         "draft_body": None,
         "draft_subject": None,
     })
