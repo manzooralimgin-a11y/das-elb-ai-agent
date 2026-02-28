@@ -74,3 +74,39 @@ def write_response(
         f"VIP STATUS: {json.dumps(vip_info) if vip_info else 'Not a known VIP guest'}\n"
     )
     return call_claude(full_system_prompt, context, max_tokens=2048)
+
+def refine_draft(
+    original_subject: str,
+    original_body: str,
+    current_draft_subject: str,
+    current_draft_body: str,
+    instructions: str,
+    language: str,
+) -> dict:
+    REFINE_SYSTEM_PROMPT = f"""You are the professional guest relations email writer for Das ELB Hotel & Restaurant in Magdeburg, Germany.
+
+{HOTEL_KNOWLEDGE_BASE}
+
+The user (a hotel staff member) has instructed you to modify an existing email draft.
+You must strictly follow their instruction while maintaining the exact same language format and professional tone of the existing draft.
+
+Return ONLY valid JSON (no markdown):
+{{
+  "subject": "<updated subject line>",
+  "body_text": "<full plain-text email body with correct line breaks>"
+}}"""
+
+    context = (
+        f"ORIGINAL EMAIL RECEIVED FROM GUEST:\n"
+        f"Subject: {original_subject}\n"
+        f"Body:\n{original_body}\n\n"
+        f"CURRENT AI DRAFT REPLY:\n"
+        f"Subject: {current_draft_subject}\n"
+        f"Body:\n{current_draft_body}\n\n"
+        f"STAFF INSTRUCTION TO REFINE DRAFT:\n"
+        f"{instructions}\n\n"
+        f"LANGUAGE DETECTED: {language}\n\n"
+        f"Apply the staff instruction to the draft. Keep everything else intact. Adhere to hotel policies from the knowledge base."
+    )
+    
+    return call_claude(REFINE_SYSTEM_PROMPT, context, max_tokens=2048)
