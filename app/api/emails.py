@@ -238,3 +238,37 @@ async def retry_email(
     asyncio.ensure_future(_run_pipeline())
 
     return {"status": "processing", "email_id": email_id}
+
+
+@router.get("/debug/test-imap")
+async def test_imap(_: str = Depends(verify_api_key)):
+    """Debug: test IONOS IMAP connectivity and count emails since last 7 days."""
+    try:
+        from app.email.imap_client import fetch_unread_emails_imap
+        emails = fetch_unread_emails_imap(max_results=5, since_days=7)
+        return {
+            "status": "ok",
+            "emails_found": len(emails),
+            "subjects": [e.get("subject", "?")[:50] for e in emails],
+        }
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+
+@router.post("/debug/test-pipeline")
+async def test_pipeline(_: str = Depends(verify_api_key)):
+    """Debug: run one test email through the full OpenAI pipeline."""
+    test_email = {
+        "message_id": "test-openai-pipeline-001",
+        "from_email": "test@example.com",
+        "from_name": "Test Guest",
+        "subject": "Zimmeranfrage Test",
+        "body": "Guten Tag, ich möchte gerne ein Zimmer für 2 Nächte buchen. Haben Sie Verfügbarkeit?",
+        "received_at": None,
+        "thread_id": None,
+    }
+    try:
+        result = await process_email(test_email)
+        return {"status": "ok", "intent": result.get("intent"), "pipeline_result": "draft_created"}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
