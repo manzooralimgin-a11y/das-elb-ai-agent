@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from pydantic import BaseModel
 from typing import Optional
 from app.api.auth import verify_api_key
@@ -13,7 +13,7 @@ from app.db.crud import (
 )
 from app.email.imap_client import send_reply_smtp
 from app.integrations.notifications import send_escalation_email
-from app.email.poller import import_all_existing_emails
+from app.email.poller import import_all_existing_emails, poll_and_process
 from app.pipeline.orchestrator import process_email
 from app.config import settings
 
@@ -161,17 +161,29 @@ async def escalate_email(
 
 @router.post("/import-all")
 async def import_all(
+    background_tasks: BackgroundTasks,
     max_results: int = Query(500, le=2000),
     since_days: int = Query(180, ge=1, le=3650),
     _: str = Depends(verify_api_key),
 ):
     """
     Import emails from INBOX + all subfolders into the DB.
+    Runs as a background task to avoid Render's 30s HTTP timeout.
     Already-processed emails are skipped by message_id deduplication.
     since_days: only import emails from the last N days (default 180 = 6 months).
     """
-    result = await import_all_existing_emails(max_results=max_results, since_days=since_days)
-    return result
+    background_tasks.add_task(import_all_existing_emails, max_results=max_results, since_days=since_days)
+    return {"status": "import_started", "since_days": since_days, "max_results": max_results}
+
+
+@router.post("/trigger-poll")
+async def trigger_poll(
+    background_tasks: BackgroundTasks,
+    _: str = Depends(verify_api_key),
+):
+    """Manually trigger one email poll cycle (runs in background — check DB for results)."""
+    background_tasks.add_task(poll_and_process)
+    return {"status": "poll_triggered", "message": "Polling IONOS inbox in background — check DB in ~30s"}
 
 
 @router.post("/{email_id}/retry")
