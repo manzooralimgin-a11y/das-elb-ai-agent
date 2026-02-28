@@ -84,3 +84,13 @@ async def update_style_profile(payload: ProfileUpdatePayload, _=Depends(verify_a
         injected_prompt=payload.injected_prompt,
     )
     return {"status": "success"}
+
+async def load_rag_index_background():
+    """Builds the RAG index on app startup without invoking the LLM style learner."""
+    logger.info("Background RAG index load started...")
+    try:
+        import asyncio
+        sent_emails = await asyncio.to_thread(fetch_sent_emails_imap, 100)
+        await asyncio.to_thread(rag_store.update_index, sent_emails)
+    except Exception as e:
+        logger.error(f"Failed to load RAG index on startup: {e}")

@@ -17,12 +17,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+import asyncio
+from app.api.learning import load_rag_index_background
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup and shutdown lifecycle."""
     logger.info("Starting Das ELB AI Email Agent...")
     await init_db()
     logger.info("Database initialized.")
+    asyncio.create_task(load_rag_index_background())
     start_scheduler()
     yield
     # Shutdown
