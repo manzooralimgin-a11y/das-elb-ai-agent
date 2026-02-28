@@ -22,7 +22,7 @@ async def poll_and_process():
     """
     logger.info(f"Polling IONOS inbox ({settings.HOTEL_EMAIL})...")
     try:
-        emails = fetch_unread_emails_imap(max_results=10)
+        emails = fetch_unread_emails_imap(max_results=50, since_days=7)
         if not emails:
             logger.debug("No new emails found.")
             return
