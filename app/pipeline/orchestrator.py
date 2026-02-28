@@ -39,7 +39,7 @@ _executor = ThreadPoolExecutor(max_workers=3)
 
 def _run_in_thread(func, *args):
     """Run a synchronous function in the thread pool executor."""
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()  # must use get_running_loop() inside async context
     return loop.run_in_executor(_executor, func, *args)
 
 
