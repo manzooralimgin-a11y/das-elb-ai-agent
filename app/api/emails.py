@@ -255,6 +255,27 @@ async def test_imap(_: str = Depends(verify_api_key)):
         return {"status": "error", "error": str(e)}
 
 
+@router.get("/debug/test-openai")
+async def test_openai(_: str = Depends(verify_api_key)):
+    """Debug: call OpenAI API directly from within Render to verify API key and connectivity."""
+    try:
+        import concurrent.futures
+        from app.agents.base_agent import call_claude
+        loop = __import__('asyncio').get_running_loop()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+            result = await loop.run_in_executor(
+                ex,
+                call_claude,
+                "You classify hotel emails. Return ONLY valid JSON.",
+                "Subject: Test\n\nBody: Hello",
+                100,
+            )
+        return {"status": "ok", "result": result}
+    except Exception as e:
+        import traceback
+        return {"status": "error", "error": str(e), "trace": traceback.format_exc()[-500:]}
+
+
 @router.post("/debug/test-pipeline")
 async def test_pipeline(
     background_tasks: BackgroundTasks,
