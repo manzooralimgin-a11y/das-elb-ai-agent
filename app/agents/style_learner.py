@@ -16,6 +16,11 @@ logger = logging.getLogger(__name__)
 STYLE_LEARNER_SYSTEM_PROMPT = """You are analyzing a collection of emails sent by Das ELB Hotel & Restaurant staff.
 Your goal is to deeply understand their exact writing style so an AI agent can replicate it perfectly.
 
+CRITICAL INSTRUCTIONS:
+- The hotel is a HIGH-END 5-STAR LUXURY HOTEL. All generated examples, tone words, and rules must reflect world-class, premium, elegant hospitality.
+- Emails starting with "AW:" and "Re:" are standard replies and MUST NOT be classified as "no-reply". "No-reply" emails are ONLY automated system messages, newsletters, or OTA auto-confirmations.
+- The "per_intent_samples" should be extremely smart, highly empathetic, and exceptionally professional 5-star replies that go above and beyond basic templates.
+
 Analyze ALL provided emails and extract:
 
 1. GREETING PATTERNS — How do they address guests? (e.g., "Sehr geehrter Herr X", "Guten Tag Frau X", "Liebes Team")
@@ -25,8 +30,8 @@ Analyze ALL provided emails and extract:
 5. AVERAGE LENGTH — Approximate word count of their replies
 6. ALWAYS INCLUDES — Things they never forget (check-in time, contact block, specific disclaimer)
 7. NEVER DOES — Patterns they avoid (informal language, certain phrases)
-8. NO-REPLY INDICATORS — Patterns in subjects/bodies of emails they DO NOT reply to (automated, newsletters, OTA booking confirmations, internal CC chains)
-9. PER-INTENT EXAMPLES — For each intent type, find the best example body text
+8. NO-REPLY INDICATORS — Patterns in subjects/bodies of emails they DO NOT reply to (automated, newsletters, OTA booking confirmations). NEVER include "AW:" or "Re:" here.
+9. PER-INTENT EXAMPLES — For each intent type, generate/find the best 5-star smart reply example.
 
 Return ONLY valid JSON (no markdown):
 {

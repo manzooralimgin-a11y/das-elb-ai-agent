@@ -4,6 +4,8 @@ POST /learning/sync  — Reads Sent Items folder and updates the style profile
 GET  /learning/profile — Returns the current learned style profile
 """
 import logging
+from typing import Dict, Any
+from pydantic import BaseModel
 from fastapi import APIRouter, Depends
 from app.api.auth import verify_api_key
 from app.email.sent_reader import fetch_sent_emails_imap
@@ -12,6 +14,10 @@ from app.db.crud import save_style_profile, get_latest_style_profile
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+class ProfileUpdatePayload(BaseModel):
+    profile_json: Dict[str, Any]
+    injected_prompt: str
 
 
 @router.post("/sync")
@@ -58,3 +64,16 @@ async def get_style_profile(_=Depends(verify_api_key)):
             "message": "No style profile yet. Click 'Sync Now' to analyze sent emails.",
         }
     return {"synced": True, **profile}
+
+
+@router.put("/profile")
+async def update_style_profile(payload: ProfileUpdatePayload, _=Depends(verify_api_key)):
+    """Manually update the style profile."""
+    latest = await get_latest_style_profile()
+    count = latest.get("emails_analyzed", 0) if latest else 0
+    await save_style_profile(
+        emails_analyzed=count,
+        profile_json=payload.profile_json,
+        injected_prompt=payload.injected_prompt,
+    )
+    return {"status": "success"}
