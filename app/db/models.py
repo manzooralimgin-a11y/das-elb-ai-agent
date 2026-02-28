@@ -17,7 +17,7 @@ from app.db.database import Base
 BERLIN = ZoneInfo("Europe/Berlin")
 
 def now_berlin() -> datetime:
-    return datetime.now(tz=BERLIN)
+    return datetime.now(tz=BERLIN).replace(tzinfo=None)
 
 
 class EmailRecord(Base):
@@ -30,8 +30,8 @@ class EmailRecord(Base):
     from_name = Column(String(255))
     subject = Column(Text)
     body = Column(Text)
-    received_at = Column(DateTime)
-    processed_at = Column(DateTime, default=now_berlin)
+    received_at = Column(DateTime(timezone=True))
+    processed_at = Column(DateTime(timezone=True), default=now_berlin)
 
     # Agent 1 outputs
     intent = Column(String(100))
@@ -59,8 +59,8 @@ class EmailRecord(Base):
     # draft_created | approved | sent | rejected | escalated | failed
     status = Column(String(50), default="draft_created")
     approved_by = Column(String(100))
-    approved_at = Column(DateTime)
-    sent_at = Column(DateTime)
+    approved_at = Column(DateTime(timezone=True))
+    sent_at = Column(DateTime(timezone=True))
     rejection_reason = Column(Text)
     requires_manager_approval = Column(Boolean, default=False)
 
@@ -81,7 +81,7 @@ class AuditLog(Base):
     email_record_id = Column(Integer, ForeignKey("email_records.id"), index=True)
     action = Column(String(100))  # approved | rejected | escalated | edited | sent
     performed_by = Column(String(100))
-    timestamp = Column(DateTime, default=now_berlin)
+    timestamp = Column(DateTime(timezone=True), default=now_berlin)
     notes = Column(Text)
     diff_chars = Column(Integer)  # how many chars changed from AI draft
 
@@ -99,7 +99,7 @@ class VIPGuest(Base):
     company = Column(String(255))
     tier = Column(String(50))  # gold | platinum | press | corporate
     notes = Column(Text)
-    added_at = Column(DateTime, default=now_berlin)
+    added_at = Column(DateTime(timezone=True), default=now_berlin)
 
 
 class StyleProfile(Base):
@@ -111,7 +111,7 @@ class StyleProfile(Base):
     __tablename__ = "style_profiles"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    learned_at = Column(DateTime, default=now_berlin)
+    learned_at = Column(DateTime(timezone=True), default=now_berlin)
     emails_analyzed = Column(Integer, default=0)
     profile_json = Column(JSON)       # full extracted profile dict
     injected_prompt = Column(Text)    # formatted prompt injection for Agent 4
