@@ -147,34 +147,53 @@ async def is_vip_guest(email: str) -> Optional[dict]:
 
 async def get_analytics_summary() -> dict:
     async with AsyncSessionLocal() as session:
-        from sqlalchemy import func
+        from sqlalchemy import func, cast, Date
 
-        total = await session.scalar(select(func.count(EmailRecord.id))) or 0
-        pending = await session.scalar(
-            select(func.count(EmailRecord.id)).where(
-                EmailRecord.status == "draft_created"
-            )
-        ) or 0
-        sent_today_count = await session.scalar(
-            select(func.count(EmailRecord.id)).where(
-                EmailRecord.status == "sent",
-                EmailRecord.sent_at >= now_berlin().replace(
-                    hour=0, minute=0, second=0, microsecond=0
-                ),
-            )
-        ) or 0
+        total = 0
+        pending = 0
+        sent_today_count = 0
+        avg_confidence = None
+        total_revenue = None
+
+        try:
+            total = await session.scalar(select(func.count(EmailRecord.id))) or 0
+        except Exception:
+            pass
+
+        try:
+            pending = await session.scalar(
+                select(func.count(EmailRecord.id)).where(
+                    EmailRecord.status == "draft_created"
+                )
+            ) or 0
+        except Exception:
+            pass
+
+        try:
+            # Use SQL-side date comparison to avoid Python/asyncpg timezone issues
+            sent_today_count = await session.scalar(
+                select(func.count(EmailRecord.id)).where(
+                    EmailRecord.status == "sent",
+                    cast(EmailRecord.sent_at, Date) == func.current_date(),
+                )
+            ) or 0
+        except Exception:
+            pass
+
         try:
             avg_confidence = await session.scalar(
                 select(func.avg(EmailRecord.confidence))
             )
         except Exception:
-            avg_confidence = None
+            pass
+
         try:
             total_revenue = await session.scalar(
                 select(func.sum(EmailRecord.revenue_attributed))
             )
         except Exception:
-            total_revenue = None
+            pass
+
         return {
             "total_emails": total,
             "pending_review": pending,
