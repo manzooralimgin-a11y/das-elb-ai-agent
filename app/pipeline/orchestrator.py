@@ -110,6 +110,10 @@ async def process_email(email_data: dict) -> dict:
         # ── Stage 2: Policy Validator (needs entities + live API) ─────────
         policy_result = await _run_in_thread(validate_policy, entities_result, intent)
 
+        # ── Stage 2.5: RAG Lookup for Similar Past Replies ────────────────
+        from app.agents.rag_store import rag_store
+        similar_emails = await _run_in_thread(rag_store.search, subject + "\n" + raw_body, 3)
+
         # ── Stage 3: Response Writer (needs all above) ────────────────────
         style_injection = style_profile.get("injected_prompt", "") if style_profile else ""
         response_result = await _run_in_thread(
@@ -123,6 +127,7 @@ async def process_email(email_data: dict) -> dict:
             language,
             vip_info,
             style_injection,
+            similar_emails,
         )
 
         # ── Stage 4: Draft is stored in DB (no external draft service) ──────

@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends
 from app.api.auth import verify_api_key
 from app.email.sent_reader import fetch_sent_emails_imap
 from app.agents.style_learner import analyze_sent_emails, build_style_injection
+from app.agents.rag_store import rag_store
 from app.db.crud import save_style_profile, get_latest_style_profile
 
 router = APIRouter()
@@ -28,12 +29,18 @@ async def sync_style_profile(_=Depends(verify_api_key)):
     """
     logger.info("Starting style profile sync...")
     try:
-        # Reduce max_results to 12 to avoid Cloudflare 100s timeout
-        sent_emails = fetch_sent_emails_imap(max_results=12)
-        logger.info(f"Fetched {len(sent_emails)} sent emails for style analysis")
+        # Fetch a solid chunk for the RAG index
+        sent_emails = fetch_sent_emails_imap(max_results=100)
+        logger.info(f"Fetched {len(sent_emails)} sent emails for RAG and style analysis")
 
-        profile_json = analyze_sent_emails(sent_emails)
+        import asyncio
+        # Run the intensive embedding task and the LLM analysis concurrently or off-thread
+        # We only feed the first 15 to the LLM to avoid token limits
+        profile_json = await asyncio.to_thread(analyze_sent_emails, sent_emails[:15])
         injected_prompt = build_style_injection(profile_json)
+
+        # Build the RAG index with all 100 emails
+        await asyncio.to_thread(rag_store.update_index, sent_emails)
 
         await save_style_profile(
             emails_analyzed=len(sent_emails),
