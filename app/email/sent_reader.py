@@ -3,6 +3,7 @@ Reads the Sent Items folder from IONOS Exchange via IMAP.
 Used by the Style Learning system to analyze how Das ELB staff actually write emails.
 """
 import email
+import email.message
 import imaplib
 import logging
 import re
@@ -87,20 +88,28 @@ def fetch_sent_emails_imap(
             conn.logout()
             return []
 
-        # Take the most recent N emails (last items in the list)
-        num_list = num_list[-max_results:]
-
-        for num in reversed(num_list):  # newest first
+        # Iterate newest first, and collect up to max_results VALID matching emails
+        for num in reversed(num_list):
+            if len(sent_emails) >= max_results:
+                break
+                
             try:
                 _, data = conn.fetch(num, "(RFC822)")
                 raw_email = data[0][1]
                 msg = email.message_from_bytes(raw_email)
 
                 subject = _decode_header_value(msg.get("Subject", ""))
+                from_raw = _decode_header_value(msg.get("From", ""))
                 to_raw = _decode_header_value(msg.get("To", ""))
                 body = _extract_body(msg)
                 date_str = msg.get("Date", "")
                 in_reply_to = msg.get("In-Reply-To", "")
+
+                # Only include emails sent FROM our hotel domain
+                from_email = _parse_email(from_raw)
+                if not from_email.endswith("@das-elb.de"):
+                    logger.debug(f"Skipping email from {from_email} (not a hotel sender)")
+                    continue
 
                 # Only include emails with a meaningful body (skip empty/image-only)
                 if len(body.strip()) < 30:
