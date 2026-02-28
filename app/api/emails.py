@@ -256,10 +256,13 @@ async def test_imap(_: str = Depends(verify_api_key)):
 
 
 @router.post("/debug/test-pipeline")
-async def test_pipeline(_: str = Depends(verify_api_key)):
-    """Debug: run one test email through the full OpenAI pipeline."""
+async def test_pipeline(
+    background_tasks: BackgroundTasks,
+    _: str = Depends(verify_api_key),
+):
+    """Debug: run one test email through the full OpenAI pipeline as a background task."""
     test_email = {
-        "message_id": "test-openai-pipeline-001",
+        "message_id": f"test-openai-pipeline-{__import__('time').time():.0f}",
         "from_email": "test@example.com",
         "from_name": "Test Guest",
         "subject": "Zimmeranfrage Test",
@@ -267,8 +270,13 @@ async def test_pipeline(_: str = Depends(verify_api_key)):
         "received_at": None,
         "thread_id": None,
     }
-    try:
-        result = await process_email(test_email)
-        return {"status": "ok", "intent": result.get("intent"), "pipeline_result": "draft_created"}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+
+    async def _run():
+        try:
+            result = await process_email(test_email)
+            logger.info(f"Test pipeline OK: intent={result.get('intent')}, status={result.get('status')}")
+        except Exception as e:
+            logger.error(f"Test pipeline FAILED: {e}", exc_info=True)
+
+    background_tasks.add_task(_run)
+    return {"status": "pipeline_started", "message_id": test_email["message_id"], "note": "Check DB in 60s for the result"}
