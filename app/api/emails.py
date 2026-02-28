@@ -169,41 +169,46 @@ async def refine_email(
     payload: RefinePayload,
     _: str = Depends(verify_api_key),
 ):
-    import asyncio
-    from app.agents.response_writer import refine_draft
-    
-    record = await get_email_by_id(email_id)
-    if not record:
-        raise HTTPException(status_code=404, detail="Email not found")
+    try:
+        import asyncio
+        import traceback
+        from app.agents.response_writer import refine_draft
         
-    if not record.get("draft_body"):
-        raise HTTPException(status_code=400, detail="Cannot refine an email without an existing draft")
+        record = await get_email_by_id(email_id)
+        if not record:
+            raise HTTPException(status_code=404, detail="Email not found")
+            
+        if not record.get("draft_body"):
+            raise HTTPException(status_code=400, detail="Cannot refine an email without an existing draft")
 
-    # Call AI agent to refine the draft
-    refined_data = await asyncio.to_thread(
-        refine_draft,
-        record["subject"],
-        record["body"],
-        record.get("draft_subject", ""),
-        record.get("draft_body", ""),
-        payload.instructions,
-        record.get("language", "de")
-    )
-    
-    # Save the updated draft to DB
-    await update_email_record_fields(
-        email_id,
-        {"draft_subject": refined_data["subject"], "draft_body": refined_data["body_text"]}
-    )
-    
-    await add_audit_log(
-        email_record_id=email_id,
-        action="refined",
-        performed_by="staff",
-        notes=f"Refined AI draft with instruction: {payload.instructions}",
-    )
-    
-    return {"status": "success", "email_id": email_id, "draft_subject": refined_data["subject"], "draft_body": refined_data["body_text"]}
+        # Call AI agent to refine the draft
+        refined_data = await asyncio.to_thread(
+            refine_draft,
+            record["subject"],
+            record["body"],
+            record.get("draft_subject", ""),
+            record.get("draft_body", ""),
+            payload.instructions,
+            record.get("language", "de")
+        )
+        
+        # Save the updated draft to DB
+        await update_email_record_fields(
+            email_id,
+            {"draft_subject": refined_data["subject"], "draft_body": refined_data["body_text"]}
+        )
+        
+        await add_audit_log(
+            email_record_id=email_id,
+            action="refined",
+            performed_by="staff",
+            notes=f"Refined AI draft with instruction: {payload.instructions}",
+        )
+        
+        return {"status": "success", "email_id": email_id, "draft_subject": refined_data["subject"], "draft_body": refined_data["body_text"]}
+    except Exception as e:
+        import traceback
+        raise HTTPException(status_code=500, detail=str(traceback.format_exc()))
 
 
 @router.post("/import-all")
