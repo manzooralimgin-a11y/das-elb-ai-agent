@@ -56,7 +56,7 @@ app.include_router(api_router, prefix="/api/v1")
 async def health_check():
     return {
         "status": "ok",
-        "model": settings.GEMINI_MODEL,
+        "model": settings.OPENAI_MODEL,
         "auto_send_enabled": settings.ENABLE_AUTO_SEND,
         "polling_interval_seconds": settings.POLL_INTERVAL_SECONDS,
     }
