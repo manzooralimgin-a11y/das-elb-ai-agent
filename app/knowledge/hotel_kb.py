@@ -46,7 +46,7 @@ ROOM TYPES & PRICING
    API key:    "komfort"
    Size:       40 m²
    Capacity:   2 persons
-   Price:      from €89/night
+   Price:      from €89/night (Single/EZ) | €129/night (Double/DZ) — EXCLUDING breakfast
    View:       Stadtpark Rotehorn
    Amenities:
      - Kingsize bed
@@ -61,7 +61,7 @@ ROOM TYPES & PRICING
    API key:    "komfort plus"
    Size:       45 m²
    Capacity:   2–3 persons
-   Price:      from €119/night
+   Price:      from €119/night (Single/EZ) | €152/night (Double/DZ) — EXCLUDING breakfast
    View:       Partial Elbe view, balcony
    Amenities:
      - Kingsize bed
@@ -78,7 +78,7 @@ ROOM TYPES & PRICING
    API key:    "suite"
    Size:       60 m²
    Capacity:   2–4 persons
-   Price:      from €169/night
+   Price:      from €169/night (Single/EZ) | €297/night (Double/DZ) — EXCLUDING breakfast
    View:       Panoramic Elbe view, panorama balcony
    Amenities:
      - Kingsize bed
