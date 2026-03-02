@@ -11,6 +11,5 @@ langdetect==1.0.9
 python-dotenv==1.0.1
 twilio==9.3.7
 alembic==1.14.0
-sentence-transformers==2.5.1
 scikit-learn==1.4.1.post1
 numpy==1.26.4
