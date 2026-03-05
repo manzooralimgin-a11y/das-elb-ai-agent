@@ -23,7 +23,9 @@ Wir reservieren für Ihre Gäste unsere großzügigen Komfort-Appartements direk
 |---|---|---|---|
 | 3 Einzelzimmer (EZ) | Komfort (exkl. Frühstück) | € 89,00 | € 267,00 |
 | 4 Doppelzimmer (DZ) | Komfort (exkl. Frühstück) | € 129,00 | € 516,00 |
-| 1 Aufbettung | Kind (9 Jahre) inkl. Wäsche | € 30,00 | € 30,00 |
+| | | | |
+| **🧒 Für unseren kleinen Gast (9 J.)** | **Zusatz-Komfortbett inkl. Kuschelwäsche** | **€ 30,00** | **€ 30,00** |
+| | | | |
 | **Summe Übernachtung** | | | **€ 813,00** |
 
 ---
