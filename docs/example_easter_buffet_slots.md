@@ -2,28 +2,27 @@
 
 Dieses Beispiel wird verwendet, wenn Gäste für das Oster-Lunch-Buffet (05. & 06. April) reservieren oder bereits reserviert haben, da das Restaurant an diesen stark besuchten Tagen mit zwei festen Zeit-Slots arbeitet.
 
-**Betreff:** Wichtige Information zu Ihrer Tischreservierung: Oster-Lunch-Buffet im Das ELB
+**Betreff:** Ihr Oster-Lunch im Das ELB – Bitte wählen Sie Ihre Genusszeit!
 
 ---
 
 Sehr geehrte(r) [Name des Gastes],
 
-herzlichen Dank für Ihr Vertrauen in unser **Das ELB Hotel & Restaurant**! Wir freuen uns sehr darauf, Sie an den Osterfeiertagen bei uns im Haus zu einem wunderbaren kulinarischen Erlebnis begrüßen zu dürfen.
+wir freuen uns riesig darauf, das diesjährige Osterfest gemeinsam mit Ihnen im **Das ELB Hotel & Restaurant** zu feiern! 
 
-Aufgrund der enorm hohen Nachfrage für unser beliebtes **Oster-Lunch-Buffet am 5. und 6. April 2026** haben wir uns entschieden, den Mittagstisch in zwei entspannte Zeitzonen (Slots) zu unterteilen. So können wir garantieren, dass unser Buffet für alle Gäste stets tischfrisch und reichhaltig gefüllt ist und unsere Servicequalität jederzeit Ihren Erwartungen entspricht. 
+Damit Sie unser beliebtes Oster-Buffet am **[5./6.] April** ganz entspannt und in bester Frische genießen können, haben wir den Mittagstisch in zwei genussvolle Runden unterteilt. 
 
-**Bitte wählen Sie für Ihre Reservierung einen der beiden folgenden Zeit-Slots aus:**
+**Wann dürfen wir Sie kulinarisch verwöhnen?**  
+Bitte wählen Sie durch eine kurze Antwort auf diese E-Mail Ihren bevorzugten Zeit-Slot:
 
-- **Slot 1:** 11:00 Uhr bis 13:00 Uhr
-- **Slot 2:** 13:30 Uhr bis 15:00 Uhr
+- 🌷 **Früher Genuss:** 11:00 Uhr bis 13:00 Uhr
+- ☀️ **Später Genuss:** 13:30 Uhr bis 15:00 Uhr
 
-Teilen Sie uns bitte durch ein kurzes Antworten auf diese E-Mail mit, welche Uhrzeit Ihnen besser zusagt. Wir passen Ihre Reservierung dann umgehend entsprechend an.
+Verraten Sie uns dabei auch gerne direkt, ob wir auf spezielle Allergien oder z. B. vegetarische Wünsche in Ihrer Familie Rücksicht nehmen dürfen.
 
-Sollten Sie zudem spezielle Ernährungswünsche (z. B. vegetarisch/vegan) oder bekannte Allergien haben, geben Sie uns gerne ebenfalls kurz Bescheid. 
+Wir können es kaum erwarten, Sie bei uns an der Elbe als Gast zu haben und Ihnen ein wunderbares Fest zu bereiten!
 
-Wir danken Ihnen für Ihr Verständnis und freuen uns sehr auf ein entspanntes und genussvolles Osterfest gemeinsam mit Ihnen.
-
-Mit herzlichen Grüßen aus dem Rotehornpark,
+Herzliche Grüße aus dem Magdeburger Stadtpark,
 
 **Das ELB Hotel & Restaurant**  
 Seilerweg 19, 39114 Magdeburg  
