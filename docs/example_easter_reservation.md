@@ -8,15 +8,13 @@ Sehr geehrte Frau Wichert,
 
 vielen Dank für Ihre freundliche Nachricht und Ihr Interesse an unserem **Das ELB Hotel & Restaurant**.
 
-Es ist uns eine große Freude, Ihnen zu bestätigen, dass wir an Ostermontag, den 6. April 2026, sehr gerne einen schönen, zusammenhängenden Tisch für 10 Personen für Sie reservieren.
+Es ist uns eine große Freude, Ihnen zu bestätigen, dass Ihre Tischreservierung für Ostermontag, den 6. April 2026, für 10 Personen erfolgreich bei uns eingebucht ist.
 
-Damit wir Ihren Besuch an den Feiertagen ideal vorbereiten können, teilen Sie uns bitte kurz mit:
-- Um **welche Uhrzeit** dürfen wir Sie und Ihre Gäste am 6. April erwarten? (Unser Restaurant ist ab 11:30 Uhr durchgehend für Sie geöffnet).
-- Haben Ihre Gäste spezielle Ernährungswünsche (z. B. vegetarisch/vegan) oder bekannte Allergien, auf die unser Küchenteam vorab achten darf?
+Wir haben einen schönen, zusammenhängenden Tisch für Sie vorbereitet und freuen uns sehr darauf, Ihnen und Ihren Gästen ein wunderbares und kulinarisches Osterfest im Das ELB zu bereiten. Unser Restaurant ist an diesem Tag ab 11:30 Uhr durchgehend geöffnet, sodass Sie ganz flexibel zu Ihrer gewünschten Zeit eintreffen können.
 
-Sobald uns die Uhrzeit vorliegt, betrachten wir die Reservierung als fix eingetragen. 
+Sollten Sie vorab noch Wünsche haben (z. B. vegetarische/vegane Optionen oder bekannte Allergien), können Sie uns diese gerne jederzeit noch mitteilen – andernfalls kümmert sich unser Serviceteam direkt vor Ort um Ihr Wohl.
 
-Wir freuen uns sehr darauf, Ihnen und Ihrer Familie oder Freunden ein wunderbares und kulinarisches Osterfest zu bereiten!
+Wir freuen uns auf Ihren Besuch!
 
 Mit herzlichen Grüßen aus dem Rotehornpark,
 
